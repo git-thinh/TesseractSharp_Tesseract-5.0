@@ -26,8 +26,20 @@ namespace demo
             Console.ReadLine();
         }
 
-        static void test_all() {
+        static void test_all()
+        {
             var input = @"./samples/1.jpg";
+            input = @"./samples/2.jpg";
+            input = @"./samples/3.jpg";
+            input = @"./samples/4.jpg";
+            input = @"./samples/5.jpg";
+
+            using (var stream = Tesseract.ImageToTxt(input, languages: new[] { Language.Vietnamese, Language.English }))
+            using (var reader = new StreamReader(stream))
+            {
+                string s = reader.ReadToEnd();
+                Console.WriteLine(s);
+            }
 
             //////var ouput1 = input.Replace(".jpg", "--.pdf");
             //////using (var stream = Tesseract.ImageToPdf(input, languages: new[] { Language.English, Language.French }))
@@ -67,7 +79,8 @@ namespace demo
             //////}
 
             //var hocr = HOCRParser.Parse(File.OpenText(ouput4));
-            using (var stream = Tesseract.ImageToHocr(input, languages: new[] { Language.English, Language.French }))
+            //using (var stream = Tesseract.ImageToHocr(input, languages: new[] { Language.English, Language.French }))
+            using (var stream = Tesseract.ImageToHocr(input, languages: new[] { Language.English, Language.Vietnamese }))
             {
                 //var hocr = HOCRParser.Parse(File.OpenText(ouput4));
                 var hocr = HOCRParser.Parse(new StreamReader(stream));
@@ -77,18 +90,18 @@ namespace demo
                     foreach (var area in page.Areas)
                     {
                         Console.WriteLine($"\t area=\t {area.Title}");
-                        foreach (var par in area.Paragraphs)
-                        {
-                            Console.WriteLine($"\t par=\t {par.Title}");
-                            foreach (var line in par.Lines)
-                            {
-                                Console.WriteLine($"\t line=\t {line.Title}");
-                                foreach (var word in line.Words)
-                                {
-                                    Console.WriteLine($"\t word=\t {word.Title}");
-                                }
-                            }
-                        }
+                        //foreach (var par in area.Paragraphs)
+                        //{
+                        //    Console.WriteLine($"\t par=\t {par.Title}");
+                        //    //foreach (var line in par.Lines)
+                        //    //{
+                        //    //    Console.WriteLine($"\t line=\t {line.Title}");
+                        //    //    foreach (var word in line.Words)
+                        //    //    {
+                        //    //        Console.WriteLine($"\t word=\t {word.Title}");
+                        //    //    }
+                        //    //}
+                        //}
                     }
                 }
             }

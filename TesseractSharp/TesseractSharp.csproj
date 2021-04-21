@@ -69,7 +69,6 @@
     <Compile Include="OcrEngineMode.cs" />
     <Compile Include="PageSegMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="Readme.txt" />
     <Compile Include="Tesseract.cs" />
     <Compile Include="TesseractEngine.cs" />
     <Compile Include="TesseractException.cs" />
