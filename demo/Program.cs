@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -34,12 +35,12 @@ namespace demo
             input = @"./samples/4.jpg";
             input = @"./samples/5.jpg";
 
-            using (var stream = Tesseract.ImageToTxt(input, languages: new[] { Language.Vietnamese, Language.English }))
-            using (var reader = new StreamReader(stream))
-            {
-                string s = reader.ReadToEnd();
-                Console.WriteLine(s);
-            }
+            //using (var stream = Tesseract.ImageToTxt(input, languages: new[] { Language.Vietnamese, Language.English }))
+            //using (var reader = new StreamReader(stream))
+            //{
+            //    string s = reader.ReadToEnd();
+            //    Console.WriteLine(s);
+            //}
 
             //////var ouput1 = input.Replace(".jpg", "--.pdf");
             //////using (var stream = Tesseract.ImageToPdf(input, languages: new[] { Language.English, Language.French }))
@@ -78,6 +79,8 @@ namespace demo
             //////    stream.CopyTo(writer);
             //////}
 
+            var lsBox = new List<BBox>() { };
+
             //var hocr = HOCRParser.Parse(File.OpenText(ouput4));
             //using (var stream = Tesseract.ImageToHocr(input, languages: new[] { Language.English, Language.French }))
             using (var stream = Tesseract.ImageToHocr(input, languages: new[] { Language.English, Language.Vietnamese }))
@@ -89,22 +92,52 @@ namespace demo
                     Console.WriteLine($"\t page=\t {page.Title}");
                     foreach (var area in page.Areas)
                     {
-                        Console.WriteLine($"\t area=\t {area.Title}");
-                        //foreach (var par in area.Paragraphs)
-                        //{
-                        //    Console.WriteLine($"\t par=\t {par.Title}");
-                        //    //foreach (var line in par.Lines)
-                        //    //{
-                        //    //    Console.WriteLine($"\t line=\t {line.Title}");
-                        //    //    foreach (var word in line.Words)
-                        //    //    {
-                        //    //        Console.WriteLine($"\t word=\t {word.Title}");
-                        //    //    }
-                        //    //}
-                        //}
+                        //Console.WriteLine($"\t area=\t {area.Title}");
+                        foreach (var par in area.Paragraphs)
+                        {
+                            lsBox.Add(par.BBox);
+                            Console.WriteLine($"\t par=\t {par.Title}");
+                            //foreach (var line in par.Lines)
+                            //{
+                            //    Console.WriteLine($"\t line=\t {line.Title}");
+                            //    foreach (var word in line.Words)
+                            //    {
+                            //        Console.WriteLine($"\t word=\t {word.Title}");
+                            //    }
+                            //}
+                        }
                     }
                 }
             }
+
+
+
+            Bitmap rez = new Bitmap(input);
+            using (Graphics g = Graphics.FromImage(rez))
+            {
+                Pen p = new Pen(Brushes.Red, 1.0F);
+                foreach (var o in lsBox)
+                {
+                    Rectangle r = new Rectangle(o.X0, o.Y0, o.Width, o.Height);
+                    //Console.WriteLine(r);
+                    g.DrawRectangle(p, r);
+                }
+
+                g.DrawImage(rez, 0, 0);
+
+            }
+            rez.Save(input + "_box_result.jpg", ImageFormat.Jpeg);
+
+
+            Console.WriteLine("DONE");
+
+
+
+
+
+
+
+
         }
 
 

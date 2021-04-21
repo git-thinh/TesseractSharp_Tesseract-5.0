@@ -6,3 +6,9 @@
 /TesseractSharp/bin
 /TesseractSharp/obj
 /demo/obj
+debug/samples/5.jpg_box_result.jpg
+debug/samples/4.jpg_box_result.jpg
+debug/samples/3.jpg_box_result.jpg
+debug/samples/2.jpg_box_result.jpg
+debug/samples/1.jpg_box_result.jpg
+debug/demo.exe
