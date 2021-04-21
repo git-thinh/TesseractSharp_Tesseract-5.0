@@ -1,0 +1,8 @@
+/packages
+/.vs
+/debug/*.config
+/debug/*.xml
+/debug/*.pdb
+/TesseractSharp/bin
+/TesseractSharp/obj
+/demo/obj
