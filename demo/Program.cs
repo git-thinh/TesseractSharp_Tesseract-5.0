@@ -79,6 +79,8 @@ namespace demo
             //////    stream.CopyTo(writer);
             //////}
 
+
+            input = @"D:\Ocr\data-test\_\1_1thres.bmp";
             var lsBox = new List<BBox>() { };
 
             //var hocr = HOCRParser.Parse(File.OpenText(ouput4));
@@ -89,22 +91,23 @@ namespace demo
                 var hocr = HOCRParser.Parse(new StreamReader(stream));
                 foreach (var page in hocr.Pages)
                 {
-                    Console.WriteLine($"\t page=\t {page.Title}");
+                    //Console.WriteLine($"\t page=\t {page.Title}");
                     foreach (var area in page.Areas)
                     {
-                        //Console.WriteLine($"\t area=\t {area.Title}");
+                        lsBox.Add(area.BBox);
+                        Console.WriteLine($"\t area=\t {area.Title}");
                         foreach (var par in area.Paragraphs)
                         {
-                            lsBox.Add(par.BBox);
                             Console.WriteLine($"\t par=\t {par.Title}");
-                            //foreach (var line in par.Lines)
-                            //{
-                            //    Console.WriteLine($"\t line=\t {line.Title}");
-                            //    foreach (var word in line.Words)
-                            //    {
-                            //        Console.WriteLine($"\t word=\t {word.Title}");
-                            //    }
-                            //}
+                            foreach (var line in par.Lines)
+                            {
+                                lsBox.Add(line.BBox);
+                                Console.WriteLine($"\t line=\t {line.Title}");
+                                //foreach (var word in line.Words)
+                                //{
+                                //    Console.WriteLine($"\t word=\t {word.Title}");
+                                //}
+                            }
                         }
                     }
                 }
@@ -112,6 +115,7 @@ namespace demo
 
 
 
+            input = @"C:\temp\1.jpg";
             Bitmap rez = new Bitmap(input);
             using (Graphics g = Graphics.FromImage(rez))
             {
